@@ -1,0 +1,193 @@
+@startuml
+version
+@enduml
+
+@startuml ER_1
+skinparam backgroundcolor AntiqueWhite/LightYellow
+
+title
+
+<font size=18 color=black>Майстерня художника
+<font size=16 color=black>ER–діаграма (нотація Мартiна)
+end title
+' hide the spot
+hide circle
+
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+entity clients #LightSKYBlue/LightGoldenRodYellow{
+  client_id 
+  --
+  account_id
+  client_full_name 
+  gender
+  birthday
+}
+
+entity accounts #LightSKYBlue/LightGoldenRodYellow{
+  account_id
+  --
+  login 
+  email 
+  password
+}
+
+entity painters #GreenYellow/LightGoldenRodYellow{
+  painter_id
+  --
+  painter_full_name 
+  gender
+  birthday
+  experience
+}
+
+entity client_orders #LightGoldenRodYellow/LightPink{
+  client_order_id
+  --
+  order_num
+  client_id
+  discount_id
+  total_price
+}
+
+entity orders #LightGoldenRodYellow/LightPink{
+    order_id
+    --
+    client_order_id
+    painting_id
+    painter_id
+    deadline
+    price
+}
+
+note left
+тринарний зв'язок
+з додатковими
+атрибутами
+end note
+
+entity paintings #Yellow/LightCoral{
+  painting_id  
+  --
+  canvas_id  
+  paintings_name
+  is_reproduction
+}
+
+entity genres #GreenYellow/LightGoldenRodYellow{
+  genre_id  
+  --
+  genre_name        
+}
+
+entity paints #GreenYellow/LightSeaGreen{
+  paint_id
+  --
+  paint_name
+  paint_color
+  paint_type_id
+ }
+
+entity paintings_paints #Yellow/LightCoral{
+    painting_paint_id
+    --
+    painting_id
+    paint_id
+    quantity
+}
+
+note right 
+зв'язок
+багато до багатьох
+з додатковими
+атрибутами
+end note
+
+entity providers #Wheat|CornflowerBlue{
+    provider_id
+    --
+    provider_name
+    contact_phone_num
+}
+
+entity canvases #LightSalmon/LightGoldenRodYellow {
+  canvas_id
+  --
+  canvas_name  
+  width
+  height
+  canvas_type_id  
+}
+
+entity paints_types #GreenYellow/LightSeaGreen{
+    paint_type_id
+    --
+    paint_type_name
+}
+
+entity canvas_types #LightSalmon/LightGoldenRodYellow {
+    canvas_type_id
+    --
+    canvas_type_name
+    material_of_manufacture
+}
+
+entity discounts #LightBlue|LightSalmon {
+  discount_id
+  --
+  discount_name  
+  percent  
+}
+
+entity paints_providers #GreenYellow/LightSeaGreen {
+  paint_provider_id
+  --
+  provider_id
+  paint_id
+  quantity
+  paint_provider_date
+}
+
+note left
+зв'язок
+багато до багатьох
+з додатковими
+атрибутами
+end note
+
+entity canvases_providers #LightSalmon/LightGoldenRodYellow{
+  canvas_provider_id
+  --
+  provider_id
+  canvas_id
+  quantity
+  canvas_provider_date
+}
+
+note right
+зв'язок
+багато до багатьох
+з додатковими
+атрибутами
+end note
+
+accounts |o--o{ clients: "Належнiсть\nакаунта"
+clients ||--o{ client_orders:"Замовлення\nклiєнта"
+orders }o-u-|| client_orders:"Картини\nу замовлені"
+orders }o-u-|| paintings:"Картини\nу замовлені"
+canvases ||--o{ paintings:"Полотно\nкартини"
+canvases }o-u-|| canvas_types:"Типи\nполотен"
+paintings ||--o{ paintings_paints :"Фарби\nу картинi"
+paintings_paints}o-u-||paints:"Фарби\nу картинi"
+client_orders }o--o| discounts: "Знижки,\nщо дiють\nна замовлення"
+painters }o-u-o{ genres:"Спецiалiзацiя\nхудожника"
+genres}o--o{paintings:"Художнi\nнапрямки\nкартини"
+paints_types ||-u-o{ paints:"Типи\nфарб"
+painters ||---o{ orders:"Автори\nкартини"
+providers ||--o{ paints_providers:"Поставки\nфарб"
+paints_providers }o-u-||paints:"Поставки\nфарб"
+providers ||-u-o{ canvases_providers:"Поставки\nполотен"
+canvases_providers }o--||canvases:"Поставки\nполотен"
+
+@enduml

@@ -1,7 +1,4 @@
-@startuml
-version
-@enduml
-
+set PLANTUML_LIMIT_SIZE=8192
 @startuml ER_1
 skinparam backgroundcolor AntiqueWhite/LightYellow
 
